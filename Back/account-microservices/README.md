@@ -35,16 +35,7 @@ Existen varias formas de ejecutar la app, dependiendo de tus necesidades:
 * Útil para desarrollo o depuración sin usar Docker.
 * Conecta a tu base de datos local según application.properties.
 
-### b) Construir y correr la imagen Docker manualmente
-```
-docker build -t java-microservices-senior .
-docker run --rm -p 8080:8080 java-microservices-senior
-```
-* Genera una imagen Docker con tu aplicación y JRE incluido.
-* Expone el puerto 8080 en tu máquina local.
-* Útil para probar la app Dockerizada sin levantar MySQL por Compose.
-
-### c) Levantar todo con Docker Compose
+## b) Levantar todo con Docker Compose
 ```
 docker compose up --build
 ```
