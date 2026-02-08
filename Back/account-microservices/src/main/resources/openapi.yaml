@@ -1,0 +1,461 @@
+openapi: 3.0.3
+info:
+  title: API de Clientes, Cuentas y Movimientos
+  version: 1.0.1
+servers:
+  - url: http://localhost:8080/api
+
+tags:
+  - name: Clientes
+    description: Operaciones relacionadas con clientes
+  - name: Cuentas
+    description: Operaciones relacionadas con cuentas
+  - name: Movimientos
+    description: Operaciones relacionadas con movimientos
+  - name: Reportes
+    description: Operaciones de reporte de estado de cuenta
+
+paths:
+  /api/clientes:
+    post:
+      tags: [Clientes]
+      summary: Crear cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteRequestDTO'
+      responses:
+        '201':
+          description: Cliente creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteResponseDTO'
+    get:
+      tags: [Clientes]
+      summary: Listar clientes
+      responses:
+        '200':
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClienteResponseDTO'
+  /api/clientes/{clienteId}:
+    get:
+      tags: [Clientes]
+      summary: Obtener cliente por ID
+      parameters:
+        - in: path
+          name: clienteId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteResponseDTO'
+        '404':
+          description: Cliente no encontrado
+    put:
+      tags: [Clientes]
+      summary: Actualizar cliente
+      parameters:
+        - in: path
+          name: clienteId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteRequestDTO'
+      responses:
+        '200':
+          description: Cliente actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteResponseDTO'
+    delete:
+      tags: [Clientes]
+      summary: Eliminar cliente
+      parameters:
+        - in: path
+          name: clienteId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Cliente eliminado
+
+  /api/cuentas:
+    post:
+      tags: [Cuentas]
+      summary: Crear cuenta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuentaRequestDTO'
+      responses:
+        '201':
+          description: Cuenta creada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CuentaResponseDTO'
+    get:
+      tags: [Cuentas]
+      summary: Listar cuentas
+      responses:
+        '200':
+          description: Lista de cuentas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CuentaResponseDTO'
+  /api/cuentas/{cuentaId}:
+    get:
+      tags: [Cuentas]
+      summary: Obtener cuenta por ID
+      parameters:
+        - in: path
+          name: cuentaId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Cuenta encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CuentaResponseDTO'
+        '404':
+          description: Cuenta no encontrada
+    put:
+      tags: [Cuentas]
+      summary: Actualizar cuenta
+      parameters:
+        - in: path
+          name: cuentaId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CuentaRequestDTO'
+      responses:
+        '200':
+          description: Cuenta actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CuentaResponseDTO'
+    delete:
+      tags: [Cuentas]
+      summary: Eliminar cuenta
+      parameters:
+        - in: path
+          name: cuentaId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Cuenta eliminada
+
+  /api/movimientos:
+    post:
+      tags: [Movimientos]
+      summary: Crear movimiento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovimientoCreateDTO'
+      responses:
+        '201':
+          description: Movimiento creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovimientoResponseDTO'
+    get:
+      tags: [Movimientos]
+      summary: Listar movimientos
+      parameters:
+        - in: query
+          name: numeroCuenta
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: clienteId
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: fechaInicio
+          required: false
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: fechaFin
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Lista de movimientos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovimientoResponseDTO'
+  /api/movimientos/{movimientoId}:
+    get:
+      tags: [Movimientos]
+      summary: Obtener movimiento por ID
+      parameters:
+        - in: path
+          name: movimientoId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Movimiento encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovimientoResponseDTO'
+        '404':
+          description: Movimiento no encontrado
+    delete:
+      tags: [Movimientos]
+      summary: Eliminar movimiento
+      parameters:
+        - in: path
+          name: movimientoId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Movimiento eliminado
+
+  /api/reportes/estado-cuenta:
+    get:
+      tags: [Reportes]
+      summary: Generar reporte de estado de cuenta
+      parameters:
+        - in: query
+          name: clienteId
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: fechaInicio
+          required: false
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: fechaFin
+          required: false
+          schema:
+            type: string
+            format: date
+        - in: query
+          name: formato
+          required: false
+          schema:
+            type: string
+            enum: [json, pdf]
+      responses:
+        '200':
+          description: Reporte generado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReporteEstadoCuentaResponseDTO'
+            application/pdf:
+              schema:
+                type: string
+                format: base64
+
+components:
+  schemas:
+    ClienteRequestDTO:
+      type: object
+      properties:
+        nombre:
+          type: string
+        genero:
+          type: string
+        edad:
+          type: integer
+        identificacion:
+          type: string
+        direccion:
+          type: string
+        telefono:
+          type: string
+        contrasena:
+          type: string
+        estado:
+          type: boolean
+      required:
+        - nombre
+        - genero
+        - edad
+        - identificacion
+        - contrasena
+    ClienteResponseDTO:
+      type: object
+      properties:
+        clienteId:
+          type: integer
+        nombre:
+          type: string
+        genero:
+          type: string
+        edad:
+          type: integer
+        identificacion:
+          type: string
+        direccion:
+          type: string
+        telefono:
+          type: string
+        estado:
+          type: boolean
+    CuentaRequestDTO:
+      type: object
+      properties:
+        numeroCuenta:
+          type: string
+        tipoCuenta:
+          type: string
+        saldoInicial:
+          type: number
+        estado:
+          type: boolean
+        clienteId:
+          type: integer
+      required:
+        - numeroCuenta
+        - tipoCuenta
+        - saldoInicial
+        - clienteId
+    CuentaResponseDTO:
+      type: object
+      properties:
+        cuentaId:
+          type: integer
+        numeroCuenta:
+          type: string
+        tipoCuenta:
+          type: string
+        saldoInicial:
+          type: number
+        estado:
+          type: boolean
+        clienteId:
+          type: integer
+    MovimientoCreateDTO:
+      type: object
+      properties:
+        numeroCuenta:
+          type: string
+        tipoMovimiento:
+          type: string
+        valor:
+          type: number
+      required:
+        - numeroCuenta
+        - tipoMovimiento
+        - valor
+    MovimientoResponseDTO:
+      type: object
+      properties:
+        movimientoId:
+          type: integer
+        numeroCuenta:
+          type: string
+        tipoMovimiento:
+          type: string
+        valor:
+          type: number
+        saldo:
+          type: number
+        fecha:
+          type: string
+          format: date-time
+    ReporteEstadoCuentaResponseDTO:
+      type: object
+      properties:
+        fechaReporte:
+          type: string
+        cliente:
+          type: string
+        cuentas:
+          type: array
+          items:
+            $ref: '#/components/schemas/CuentaReporteDTO'
+    CuentaReporteDTO:
+      type: object
+      properties:
+        numeroCuenta:
+          type: string
+        tipo:
+          type: string
+        saldoInicial:
+          type: number
+        estado:
+          type: boolean
+        movimientos:
+          type: array
+          items:
+            $ref: '#/components/schemas/MovimientoReporteDTO'
+        totalCreditos:
+          type: number
+        totalDebitos:
+          type: number
+        saldoFinal:
+          type: number
+    MovimientoReporteDTO:
+      type: object
+      properties:
+        fecha:
+          type: string
+          format: date
+        tipoMovimiento:
+          type: string
+        valor:
+          type: number
+        saldoDisponible:
+          type: number
+
