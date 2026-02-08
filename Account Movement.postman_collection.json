@@ -1,0 +1,533 @@
+{
+  "info": {
+    "_postman_id": "f5fcbaa2-226b-47c2-b71d-32e8b2d8b8d0",
+    "name": "Account Movement",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3411856"
+  },
+  "item": [
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Create Client",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Santiago\",\r\n  \"genero\": \"MASCULINO\",\r\n  \"edad\": \"33\",\r\n  \"identificacion\": \"0928634690\",\r\n  \"direccion\": \"Gye\",\r\n  \"telefono\": \"0999999999\",\r\n  \"contrasena\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Client By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/clientes/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clientes",
+                "4"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/clientes/1' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Client by Id",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Santiago Sánchez Alvarado\",\r\n  \"genero\": \"MASCULINO\",\r\n  \"edad\": \"30\",\r\n  \"identificacion\": \"0928634690\",\r\n  \"direccion\": \"Gye\",\r\n  \"telefono\": \"0988888888\",\r\n  \"contrasena\": \"12345\",\r\n  \"estado\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/clientes/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clientes",
+                "4"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'PUT' \\\r\n  'http://localhost:8080/api/clientes/1' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"nombre\": \"string\",\r\n  \"genero\": \"MASCULINO\",\r\n  \"edad\": 130,\r\n  \"identificacion\": \"string\",\r\n  \"direccion\": \"string\",\r\n  \"telefono\": \"strings\",\r\n  \"contrasena\": \"stringst\",\r\n  \"estado\": true\r\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Client All",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clientes"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/clientes' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Client",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/clientes/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "clientes",
+                "1"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'http://localhost:8080/api/clientes/1' \\\r\n  -H 'accept: */*'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Cuentas",
+      "item": [
+        {
+          "name": "Create Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"numeroCuenta\": \"4444\",\r\n  \"tipoCuenta\": \"AHORRO\",\r\n  \"saldoInicial\": 2000,\r\n  \"clienteId\": 4\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/cuentas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "cuentas"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/api/cuentas' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"numeroCuenta\": \"string\",\r\n  \"tipoCuenta\": \"AHORROS\",\r\n  \"saldoInicial\": 0,\r\n  \"estado\": true,\r\n  \"clienteId\": \"string\"\r\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Account By numeroCuenta",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/cuentas/cuenta/4444",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "cuentas",
+                "cuenta",
+                "4444"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/cuentas/1' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Account All",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/cuentas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "cuentas"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/cuentas' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Account By numeroCuenta",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"tipoCuenta\": \"AHORRO\",\r\n  \"saldoInicial\": 120,\r\n  \"estado\": false,\r\n  \"numeroCuenta\": \"string\",\r\n  \"clienteId\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/cuentas/cuenta/225487",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "cuentas",
+                "cuenta",
+                "225487"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'PUT' \\\r\n  'http://localhost:8080/api/cuentas/1' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"tipoCuenta\": \"AHORROS\",\r\n  \"saldoInicial\": 0,\r\n  \"estado\": true,\r\n  \"clienteId\": \"string\"\r\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "Delte Account By numeroCuenta",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/cuentas/cuenta/496825",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "cuentas",
+                "cuenta",
+                "496825"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'http://localhost:8080/api/cuentas/1' \\\r\n  -H 'accept: */*'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Movimientos",
+      "item": [
+        {
+          "name": "Create Movimiento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"numeroCuenta\": \"4444\",\r\n    \"tipoMovimiento\": \"DEBITO\",\r\n    \"valor\": 50\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/movimientos",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "movimientos"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'POST' \\\r\n  'http://localhost:8080/api/cuentas/1/movimientos' \\\r\n  -H 'accept: application/json' \\\r\n  -H 'Content-Type: application/json' \\\r\n  -d '{\r\n  \"fecha\": \"2026-02-05T21:20:30.539Z\",\r\n  \"tipoMovimiento\": \"DEPOSITO\",\r\n  \"valor\": 0\r\n}'"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movimiento By Account",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/movimientos/cuenta/4444",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "movimientos",
+                "cuenta",
+                "4444"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/cuentas/1/movimientos' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movimiento All",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/movimientos/cliente/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "movimientos",
+                "cliente",
+                "4"
+              ],
+              "query": [
+                {
+                  "key": "fechaInicio",
+                  "value": "2022-02-08",
+                  "disabled": true
+                },
+                {
+                  "key": "fechaFin",
+                  "value": "2022-02-08",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/cuentas/1/movimientos' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Movimiento",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "accept",
+                "value": "*/*"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/movimientos/1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "movimientos",
+                "1"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'DELETE' \\\r\n  'http://localhost:8080/api/movimientos/1' \\\r\n  -H 'accept: */*'"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Reporte",
+      "item": [
+        {
+          "name": "/api/reportes/estado-cuenta",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/reportes/estado-cuenta?fechaInicio=2022-02-08&fechaFin=2022-02-08&formato=json&clienteId=2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "reportes",
+                "estado-cuenta"
+              ],
+              "query": [
+                {
+                  "key": "fechaInicio",
+                  "value": "2022-02-08"
+                },
+                {
+                  "key": "fechaFin",
+                  "value": "2022-02-08"
+                },
+                {
+                  "key": "formato",
+                  "value": "json",
+                  "description": "json o pdf"
+                },
+                {
+                  "key": "clienteId",
+                  "value": "2"
+                }
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/cuentas/1/movimientos' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

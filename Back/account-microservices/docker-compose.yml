@@ -18,7 +18,7 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: sasa
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
-      SPRING_SQL_INIT_MODE: never
+      SPRING_SQL_INIT_MODE: always
       SPRING_PROFILES_ACTIVE: test
 
 volumes:
