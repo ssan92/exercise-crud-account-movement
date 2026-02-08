@@ -492,7 +492,7 @@
               }
             ],
             "url": {
-              "raw": "http://localhost:8080/api/reportes/estado-cuenta?fechaInicio=2022-02-08&fechaFin=2022-02-08&formato=json&clienteId=2",
+              "raw": "http://localhost:8080/api/reportes/estado-cuenta?formato=json&clienteId=4",
               "protocol": "http",
               "host": [
                 "localhost"
@@ -506,11 +506,13 @@
               "query": [
                 {
                   "key": "fechaInicio",
-                  "value": "2022-02-08"
+                  "value": "2022-02-08",
+                  "disabled": true
                 },
                 {
                   "key": "fechaFin",
-                  "value": "2022-02-08"
+                  "value": "2022-02-08",
+                  "disabled": true
                 },
                 {
                   "key": "formato",
@@ -519,7 +521,7 @@
                 },
                 {
                   "key": "clienteId",
-                  "value": "2"
+                  "value": "4"
                 }
               ]
             },
