@@ -1,0 +1,25 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: sasa
+      MYSQL_DATABASE: accountmovement
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  account-service:
+    build: .
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/accountmovement?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: sasa
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_SQL_INIT_MODE: always
+      SPRING_PROFILES_ACTIVE: test
+
+volumes:
+  mysql_data:
