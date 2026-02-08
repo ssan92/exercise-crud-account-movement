@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Cuenta } from '../../../../core/models/cuenta.model';
+import { Cliente } from '../../../../core/models/cliente.model';
 import { CuentaService } from '../../../../core/services/cuenta.service';
+import { ClienteService } from '../../../../core/services/cliente.service';
 import { CuentaFormComponent } from '../cuenta-form/cuenta-form';
 
 /**
@@ -28,16 +30,23 @@ export class CuentaListComponent implements OnInit {
   // Tipos de cuenta para filtrado
   public tiposCuenta: Array<{ valor: string; etiqueta: string }> = [];
 
+  // Clientes para el selector del formulario
+  public clientes: Cliente[] = [];
+
   /**
    * Constructor con inyección de dependencias
    */
-  constructor(private cuentaService: CuentaService) {}
+  constructor(
+    private cuentaService: CuentaService,
+    private clienteService: ClienteService
+  ) {}
 
   /**
    * Ciclo de vida: Se ejecuta al iniciar el componente
    */
   ngOnInit(): void {
     this.cargarCuentas();
+    this.cargarClientes();
     this.tiposCuenta = this.cuentaService.obtenerTiposCuenta();
   }
 
@@ -53,6 +62,20 @@ export class CuentaListComponent implements OnInit {
       error: (error) => {
         console.error('Error cargando cuentas:', error);
         alert('Error al cargar las cuentas');
+      }
+    });
+  }
+
+  /**
+   * Carga los clientes para el selector del formulario
+   */
+  private cargarClientes(): void {
+    this.clienteService.obtenerTodos$().subscribe({
+      next: (clientes) => {
+        this.clientes = clientes;
+      },
+      error: (error) => {
+        console.error('Error cargando clientes:', error);
       }
     });
   }

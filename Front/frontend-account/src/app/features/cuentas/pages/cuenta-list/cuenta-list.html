@@ -92,6 +92,7 @@
     <app-cuenta-form
       [cuentaParaEditar]="cuentaSeleccionada"
       [tiposCuenta]="tiposCuenta"
+      [clientes]="clientes"
       (onSave)="guardar($event)"
       (onCancel)="cancelar()"
       aria-label="Formulario de cuentas"

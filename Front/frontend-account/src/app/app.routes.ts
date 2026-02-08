@@ -14,6 +14,10 @@ export const routes: Routes = [
         path: 'cuentas', 
         loadComponent: () => import('./features/cuentas/pages/cuenta-list/cuenta-list').then(m => m.CuentaListComponent) 
       },
+      { 
+        path: 'movimientos', 
+        loadComponent: () => import('./features/movimientos/pages/movimiento-list/movimiento-list').then(m => m.MovimientoListComponent) 
+      },
 
       { path: '', redirectTo: 'clientes', pathMatch: 'full' }
     ]

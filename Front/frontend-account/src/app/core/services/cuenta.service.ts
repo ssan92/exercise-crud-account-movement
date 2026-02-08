@@ -59,10 +59,27 @@ export class CuentaService {
   }
 
   /**
-   * Obtiene cuentas por clienteId
+   * Obtiene cuentas por clienteId (desde caché local)
    */
   obtenerPorClienteId(clienteId: string | number): Cuenta[] {
     return this.cuentas$.value.filter(c => c.clienteId === clienteId);
+  }
+
+  /**
+   * Obtiene cuentas por clienteId desde el servidor
+   * GET /api/cuentas/cliente/{clienteId}
+   */
+  obtenerPorClienteId$(clienteId: string | number): Observable<Cuenta[]> {
+    const url = `${this.apiUrl}/cliente/${clienteId}`;
+    return this.http.get<Cuenta[]>(url).pipe(
+      tap(cuentas => {
+        console.log(`✓ Cuentas del cliente ${clienteId} cargadas:`, cuentas);
+      }),
+      catchError((error) => {
+        console.error(`✗ Error cargando cuentas del cliente ${clienteId}:`, error);
+        throw error;
+      })
+    );
   }
 
   /**

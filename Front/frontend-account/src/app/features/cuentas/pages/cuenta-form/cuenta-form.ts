@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output, Input, OnChanges, SimpleChanges } from
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Cuenta } from '../../../../core/models/cuenta.model';
+import { Cliente } from '../../../../core/models/cliente.model';
 
 /**
  * CuentaFormComponent: Formulario para crear/editar cuentas
@@ -19,6 +20,7 @@ export class CuentaFormComponent implements OnChanges {
   // Propiedades de entrada
   @Input() cuentaParaEditar: Cuenta | null = null;
   @Input() tiposCuenta: Array<{ valor: string; etiqueta: string }> = [];
+  @Input() clientes: Cliente[] = [];
 
   // Propiedades de salida (eventos)
   @Output() onSave = new EventEmitter<Cuenta>();

@@ -79,21 +79,24 @@
 
       <!-- Campo: Cliente ID -->
       <div class="form-field">
-        <label for="clienteId">ID del Cliente <span class="required">*</span></label>
-        <input
+        <label for="clienteId">Cliente <span class="required">*</span></label>
+        <select
           id="clienteId"
-          type="number"
           formControlName="clienteId"
-          placeholder="Ej: 1"
           aria-describedby="clienteId-error"
           (blur)="obtenerControl('clienteId')?.markAsTouched()"
         >
+          <option value="">-- Seleccione un cliente --</option>
+          <option *ngFor="let cliente of clientes" [value]="cliente.clienteId">
+            {{ cliente.nombre }} ({{ cliente.identificacion }})
+          </option>
+        </select>
         <small
           id="clienteId-error"
           class="error"
           *ngIf="tieneError('clienteId', 'required')"
         >
-          El ID del cliente es requerido
+          El cliente es requerido
         </small>
       </div>
 

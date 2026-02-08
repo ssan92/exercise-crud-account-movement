@@ -1,0 +1,176 @@
+/* Movimiento Form Component - Diseño Moderno */
+
+.form-card {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-top: 6px solid #2c3e50;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-field.full-width {
+  grid-column: span 2;
+}
+
+/* Labels */
+.form-field label {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+.required {
+  color: #e74c3c;
+  margin-left: 2px;
+}
+
+/* Inputs y Selects */
+.form-field input,
+.form-field select {
+  padding: 12px 16px;
+  border: 2px solid #ecf0f1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background-color: #fafbfc;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #3498db;
+  outline: none;
+  background-color: white;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
+.form-field input::placeholder {
+  color: #95a5a6;
+}
+
+/* Errores */
+.error {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 2px;
+  font-weight: 500;
+}
+
+/* Botones de Acción */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid #ecf0f1;
+  padding-top: 24px;
+  margin-top: 30px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+/* Botón Cancelar / Volver */
+.btn-secondary {
+  background-color: #f0f2f5;
+  color: #2c3e50;
+  border: 1px solid #ecf0f1;
+  flex: 1;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #e8eaed;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Botón Guardar / Crear */
+.btn-primary,
+.btn-success {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+  color: white;
+  flex: 1.2;
+  box-shadow: 0 4px 15px rgba(39, 174, 96, 0.2);
+}
+
+.btn-primary:hover:not(:disabled),
+.btn-success:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3);
+  background: linear-gradient(135deg, #229954 0%, #1e8449 100%);
+}
+
+.btn-primary:active:not(:disabled),
+.btn-success:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled,
+.btn-success:disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+}
+
+/* Icono en botones */
+.icon {
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .form-card {
+    padding: 24px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .form-field.full-width {
+    grid-column: span 1;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}

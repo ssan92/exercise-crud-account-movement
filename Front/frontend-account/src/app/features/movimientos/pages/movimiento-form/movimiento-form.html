@@ -1,0 +1,133 @@
+<div class="form-card">
+  <form [formGroup]="movimientoForm" (ngSubmit)="submit()" novalidate>
+    <!-- Grid de campos del formulario -->
+    <div class="form-grid">
+
+      <!-- Campo: Cliente -->
+      <div class="form-field">
+        <label for="clienteId">Cliente <span class="required">*</span></label>
+        <select
+          id="clienteId"
+          formControlName="clienteId"
+          aria-describedby="clienteId-error"
+          (blur)="obtenerControl('clienteId')?.markAsTouched()"
+        >
+          <option value="">-- Seleccione un cliente --</option>
+          <option *ngFor="let cliente of clientes" [value]="cliente.clienteId">
+            {{ cliente.nombre }} ({{ cliente.identificacion }})
+          </option>
+        </select>
+        <small
+          id="clienteId-error"
+          class="error"
+          *ngIf="tieneError('clienteId', 'required')"
+        >
+          El cliente es requerido
+        </small>
+      </div>
+
+      <!-- Campo: Cuenta -->
+      <div class="form-field">
+        <label for="cuentaId">Cuenta <span class="required">*</span></label>
+        <select
+          id="cuentaId"
+          formControlName="cuentaId"
+          aria-describedby="cuentaId-error"
+          (blur)="obtenerControl('cuentaId')?.markAsTouched(); obtenerNumeroCuentaSeleccionada()"
+          [disabled]="cuentas.length === 0 || cargandoCuentas"
+        >
+          <option value="">
+            <span *ngIf="cargandoCuentas">-- Cargando cuentas... --</span>
+            <span *ngIf="!cargandoCuentas">-- Seleccione una cuenta --</span>
+          </option>
+          <option *ngFor="let cuenta of cuentas" [value]="cuenta.id">
+            {{ cuenta.numeroCuenta }} ({{ cuenta.tipoCuenta }} - Saldo: {{ cuenta.saldo | currency }})
+          </option>
+        </select>
+        <small
+          id="cuentaId-error"
+          class="error"
+          *ngIf="tieneError('cuentaId', 'required')"
+        >
+          La cuenta es requerida
+        </small>
+      </div>
+
+      <!-- Campo: Número de Cuenta (Oculto, se llena automáticamente) -->
+      <div class="form-field" style="display: none;">
+        <label for="numeroCuenta">Número de Cuenta <span class="required">*</span></label>
+        <input
+          id="numeroCuenta"
+          type="text"
+          formControlName="numeroCuenta"
+          placeholder="Se cargará automáticamente"
+          readonly
+        >
+      </div>
+
+      <!-- Campo: Tipo de Movimiento -->
+      <div class="form-field">
+        <label for="tipoMovimiento">Tipo de Movimiento <span class="required">*</span></label>
+        <select
+          id="tipoMovimiento"
+          formControlName="tipoMovimiento"
+          aria-describedby="tipoMovimiento-error"
+          (blur)="obtenerControl('tipoMovimiento')?.markAsTouched()"
+        >
+          <option *ngFor="let tipo of tiposMovimiento" [value]="tipo.valor">
+            {{ tipo.etiqueta }}
+          </option>
+        </select>
+        <small
+          id="tipoMovimiento-error"
+          class="error"
+          *ngIf="tieneError('tipoMovimiento', 'required')"
+        >
+          El tipo de movimiento es requerido
+        </small>
+      </div>
+
+      <!-- Campo: Valor -->
+      <div class="form-field">
+        <label for="valor">Valor <span class="required">*</span></label>
+        <input
+          id="valor"
+          type="number"
+          step="0.01"
+          formControlName="valor"
+          placeholder="Ej: 50.00"
+          aria-describedby="valor-error"
+          (blur)="obtenerControl('valor')?.markAsTouched()"
+        >
+        <small
+          id="valor-error"
+          class="error"
+          *ngIf="obtenerControl('valor')?.invalid && obtenerControl('valor')?.touched"
+        >
+          {{ obtenerErrorValor() }}
+        </small>
+      </div>
+
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="cancelar()"
+        aria-label="Cancelar y volver a la lista"
+      >
+        <span class="icon">⬅</span> Volver
+      </button>
+      <button
+        type="submit"
+        class="btn-success"
+        [disabled]="enviando"
+      >
+        <span *ngIf="!enviando">💾 Crear Movimiento</span>
+        <span *ngIf="enviando">⏳ Creando...</span>
+      </button>
+    </div>
+  </form>
+</div>
