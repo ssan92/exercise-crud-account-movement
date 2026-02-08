@@ -13,5 +13,6 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 public class ClienteResponseDTO extends PersonaDTO {
     private Long clienteId;
+    private String contrasena;
     private Boolean estado;
 }
