@@ -1,0 +1,96 @@
+<div class="cliente-container">
+
+  <!-- VISTA: Listado de Clientes -->
+  <div *ngIf="!verFormulario">
+    <!-- Encabezado con título y botón nuevo -->
+    <div class="header-section">
+      <h1>Listado de Clientes</h1>
+      <button class="btn-accent" (click)="abrirNuevo()" title="Crear nuevo cliente">
+        ➕ Nuevo Cliente
+      </button>
+    </div>
+
+    <!-- Sección de búsqueda -->
+    <div class="search-section">
+      <input
+        type="text"
+        placeholder="Buscar por nombre..."
+        class="search-input"
+        [(ngModel)]="busqueda"
+        (keyup)="buscar()"
+        aria-label="Buscar clientes por nombre"
+      >
+    </div>
+
+    <!-- Tabla de clientes -->
+    <div class="table-wrapper">
+      <table class="banco-table" role="grid" aria-label="Lista de clientes">
+        <thead>
+          <tr role="row">
+            <th scope="col">Nombre</th>
+            <th scope="col">Género</th>
+            <th scope="col">Edad</th>
+            <th scope="col">Identificación</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cliente of clientesFiltrados; trackBy: trackByCliente" role="row">
+            <td data-label="Nombre">{{ cliente.nombre }}</td>
+            <td data-label="Género">{{ cliente.genero }}</td>
+            <td data-label="Edad" style="text-align: center;">{{ cliente.edad }}</td>
+            <td data-label="Identificación">{{ cliente.identificacion }}</td>
+            <td data-label="Dirección">{{ cliente.direccion }}</td>
+            <td data-label="Teléfono">{{ cliente.telefono }}</td>
+            <td data-label="Estado">
+              <span class="badge" [class.active]="cliente.estado" [class.inactive]="!cliente.estado">
+                {{ cliente.estado ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td data-label="Acciones" class="actions">
+              <button
+                class="btn-icon edit"
+                (click)="onEdit(cliente)"
+                title="Editar cliente"
+                aria-label="Editar cliente {{ cliente.nombre }}"
+              >
+                ✏️
+              </button>
+              <button
+                class="btn-icon delete"
+                (click)="onDelete(cliente.clienteId)"
+                title="Eliminar cliente"
+                aria-label="Eliminar cliente {{ cliente.nombre }}"
+              >
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mensaje cuando no hay resultados -->
+      <div *ngIf="clientesFiltrados.length === 0" class="no-results">
+        <p>No se encontraron clientes con los criterios de búsqueda.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA: Formulario de Clientes -->
+  <div *ngIf="verFormulario">
+    <div class="header-section">
+      <h1>{{ clienteSeleccionado ? 'Editar Cliente' : 'Nuevo Cliente' }}</h1>
+    </div>
+
+    <app-cliente-form
+      [clienteParaEditar]="clienteSeleccionado"
+      (onSave)="guardar($event)"
+      (onCancel)="cancelar()"
+      aria-label="Formulario de clientes"
+    ></app-cliente-form>
+  </div>
+
+</div>

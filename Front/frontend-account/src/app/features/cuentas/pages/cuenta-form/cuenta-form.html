@@ -1,0 +1,136 @@
+<div class="form-card">
+  <form [formGroup]="cuentaForm" (ngSubmit)="submit()" novalidate>
+    <!-- Grid de campos del formulario -->
+    <div class="form-grid">
+
+      <!-- Campo: Número de Cuenta -->
+      <div class="form-field">
+        <label for="numeroCuenta">Número de Cuenta <span class="required">*</span></label>
+        <input
+          id="numeroCuenta"
+          type="text"
+          formControlName="numeroCuenta"
+          placeholder="Ej: 1001-2023-001"
+          aria-describedby="numeroCuenta-error"
+          (blur)="obtenerControl('numeroCuenta')?.markAsTouched()"
+        >
+        <small
+          id="numeroCuenta-error"
+          class="error"
+          *ngIf="tieneError('numeroCuenta', 'required')"
+        >
+          El número de cuenta es requerido
+        </small>
+        <small
+          class="error"
+          *ngIf="tieneError('numeroCuenta', 'minlength')"
+        >
+          Mínimo 8 caracteres
+        </small>
+      </div>
+
+      <!-- Campo: Tipo de Cuenta -->
+      <div class="form-field">
+        <label for="tipoCuenta">Tipo de Cuenta <span class="required">*</span></label>
+        <select
+          id="tipoCuenta"
+          formControlName="tipoCuenta"
+          aria-describedby="tipoCuenta-error"
+          (blur)="obtenerControl('tipoCuenta')?.markAsTouched()"
+        >
+          <option *ngFor="let tipo of tiposCuenta" [value]="tipo.valor">
+            {{ tipo.etiqueta }}
+          </option>
+        </select>
+        <small
+          id="tipoCuenta-error"
+          class="error"
+          *ngIf="tieneError('tipoCuenta', 'required')"
+        >
+          El tipo de cuenta es requerido
+        </small>
+      </div>
+
+      <!-- Campo: Saldo Inicial -->
+      <div class="form-field">
+        <label for="saldoInicial">Saldo Inicial <span class="required">*</span></label>
+        <input
+          id="saldoInicial"
+          type="number"
+          formControlName="saldoInicial"
+          placeholder="Ej: 5000"
+          aria-describedby="saldoInicial-error"
+          (blur)="obtenerControl('saldoInicial')?.markAsTouched()"
+        >
+        <small
+          id="saldoInicial-error"
+          class="error"
+          *ngIf="tieneError('saldoInicial', 'required')"
+        >
+          El saldo inicial es requerido
+        </small>
+        <small
+          class="error"
+          *ngIf="tieneError('saldoInicial', 'min')"
+        >
+          El saldo no puede ser negativo
+        </small>
+      </div>
+
+      <!-- Campo: Cliente ID -->
+      <div class="form-field">
+        <label for="clienteId">ID del Cliente <span class="required">*</span></label>
+        <input
+          id="clienteId"
+          type="number"
+          formControlName="clienteId"
+          placeholder="Ej: 1"
+          aria-describedby="clienteId-error"
+          (blur)="obtenerControl('clienteId')?.markAsTouched()"
+        >
+        <small
+          id="clienteId-error"
+          class="error"
+          *ngIf="tieneError('clienteId', 'required')"
+        >
+          El ID del cliente es requerido
+        </small>
+      </div>
+
+      <!-- Campo: Estado (Checkbox) -->
+      <div class="form-field checkbox-field">
+        <label class="checkbox-label" for="estado">
+          <input
+            id="estado"
+            type="checkbox"
+            formControlName="estado"
+            class="checkbox-input"
+          >
+          <span class="checkmark"></span>
+          <span>Cuenta Activa</span>
+        </label>
+      </div>
+
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="form-actions">
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="cancel()"
+        aria-label="Cancelar y volver a la lista"
+      >
+        <span class="icon">⬅</span> Volver
+      </button>
+      <button
+        type="submit"
+        class="btn-success"
+        [disabled]="cuentaForm.invalid"
+        [attr.aria-label]="obtenerTextoBoton()"
+      >
+        {{ obtenerTextoBoton() }}
+      </button>
+    </div>
+  </form>
+</div>

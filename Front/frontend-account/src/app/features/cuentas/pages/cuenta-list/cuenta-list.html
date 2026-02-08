@@ -1,0 +1,101 @@
+<div class="cuenta-container">
+
+  <!-- VISTA: Listado de Cuentas -->
+  <div *ngIf="!verFormulario">
+    <!-- Encabezado con título y botón nuevo -->
+    <div class="header-section">
+      <h1>Gestión de Cuentas</h1>
+      <button class="btn-accent" (click)="abrirNueva()" title="Crear nueva cuenta">
+        ➕ Nueva Cuenta
+      </button>
+    </div>
+
+    <!-- Sección de búsqueda -->
+    <div class="search-section">
+      <input
+        type="text"
+        placeholder="Buscar por número de cuenta..."
+        class="search-input"
+        [(ngModel)]="busqueda"
+        (keyup)="buscar()"
+        aria-label="Buscar cuentas por número"
+      >
+    </div>
+
+    <!-- Tabla de cuentas -->
+    <div class="table-wrapper">
+      <table class="banco-table" role="grid" aria-label="Lista de cuentas">
+        <thead>
+          <tr role="row">
+            <th scope="col">Número de Cuenta</th>
+            <th scope="col">Tipo de Cuenta</th>
+            <th scope="col">Saldo</th>
+            <th scope="col">Cliente ID</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Fecha Creación</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cuenta of cuentasFiltradas; trackBy: trackByCuenta" role="row">
+            <td data-label="Número de Cuenta" class="numero-cuenta">
+              <strong>{{ cuenta.numeroCuenta }}</strong>
+            </td>
+            <td data-label="Tipo de Cuenta">
+              <span class="tipo-badge" [attr.data-tipo]="cuenta.tipoCuenta">
+                {{ obtenerEtiquetaTipo(cuenta.tipoCuenta) }}
+              </span>
+            </td>
+            <td data-label="Saldo" class="saldo">{{ formatearSaldo(cuenta.saldo) }}</td>
+            <td data-label="Cliente ID" style="text-align: center;">{{ cuenta.clienteId }}</td>
+            <td data-label="Estado">
+              <span class="badge" [class.active]="cuenta.estado" [class.inactive]="!cuenta.estado">
+                {{ cuenta.estado ? 'Activa' : 'Inactiva' }}
+              </span>
+            </td>
+            <td data-label="Fecha Creación" class="fecha">{{ cuenta.fechaCreacion }}</td>
+            <td data-label="Acciones" class="actions">
+              <button
+                class="btn-icon edit"
+                (click)="onEdit(cuenta)"
+                title="Editar cuenta"
+                aria-label="Editar cuenta {{ cuenta.numeroCuenta }}"
+              >
+                ✏️
+              </button>
+              <button
+                class="btn-icon delete"
+                (click)="onDelete(cuenta.id)"
+                title="Eliminar cuenta"
+                aria-label="Eliminar cuenta {{ cuenta.numeroCuenta }}"
+              >
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mensaje cuando no hay resultados -->
+      <div *ngIf="cuentasFiltradas.length === 0" class="no-results">
+        <p>No se encontraron cuentas con los criterios de búsqueda.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA: Formulario de Cuentas -->
+  <div *ngIf="verFormulario">
+    <div class="header-section">
+      <h1>{{ cuentaSeleccionada ? 'Editar Cuenta' : 'Nueva Cuenta' }}</h1>
+    </div>
+
+    <app-cuenta-form
+      [cuentaParaEditar]="cuentaSeleccionada"
+      [tiposCuenta]="tiposCuenta"
+      (onSave)="guardar($event)"
+      (onCancel)="cancelar()"
+      aria-label="Formulario de cuentas"
+    ></app-cuenta-form>
+  </div>
+
+</div>

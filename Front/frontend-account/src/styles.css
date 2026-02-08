@@ -1,0 +1,77 @@
+/* Global Styles - Variables CSS y estilos base */
+
+:root {
+  /* Colores institucionales */
+  --color-primary: #2c3e50; /* Azul oscuro */
+  --color-secondary: #34495e; /* Gris azulado */
+  --color-accent: #f1c40f; /* Amarillo */
+  --color-success: #27ae60; /* Verde */
+  --color-danger: #e74c3c; /* Rojo */
+  --color-warning: #f39c12; /* Naranja */
+  --color-info: #3498db; /* Azul claro */
+
+  /* Estado */
+  --status-active: #00b894;
+  --status-inactive: #d63031;
+  --status-bg-active: #55efc4;
+  --status-bg-inactive: #fab1a0;
+
+  /* Neutrales */
+  --color-white: #ffffff;
+  --color-background: #f8f9fa;
+  --color-border: #dcdde1;
+  --color-text: #2c3e50;
+  --color-text-light: #95a5a6;
+
+  /* Espaciado */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 25px;
+  --spacing-3xl: 30px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* Sombras */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  color: var(--color-secondary);
+}
+
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }
+h3 { font-size: 16px; }
+
