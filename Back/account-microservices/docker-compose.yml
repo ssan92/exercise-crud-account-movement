@@ -1,20 +1,24 @@
-version: '3.8'
 services:
-  app:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: sasa
+      MYSQL_DATABASE: accountmovement
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  account-service:
     build: .
+    depends_on:
+      - mysql
     ports:
       - "8080:8080"
-    depends_on:
-      - db
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/tu_basedatos
-      SPRING_DATASOURCE_USERNAME: usuario
-      SPRING_DATASOURCE_PASSWORD: clave
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: tu_basedatos
-      POSTGRES_USER: usuario
-      POSTGRES_PASSWORD: clave
-    ports:
-      - "5432:5432"
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/accountmovement?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: sasa
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_SQL_INIT_MODE: never
+
+volumes:
+  mysql_data:
