@@ -1,5 +1,3 @@
--- Script de creación de base de datos para la prueba técnica
--- Incluye datos de ejemplo según los casos de uso del PDF
 
 CREATE TABLE IF NOT EXISTS cliente (
                          cliente_id BIGINT AUTO_INCREMENT PRIMARY KEY,
