@@ -84,12 +84,14 @@ public class MovimientoServiceImpl implements MovimientoService {
 
     @Override
     public List<MovimientoResponseDTO> obtenerMovimientosPorClienteYFechas(Long clienteId, LocalDate fechaInicio, LocalDate fechaFin) {
-        // Si las fechas no están presentes, usar la fecha actual
         LocalDate now = LocalDate.now();
         if (fechaInicio == null) fechaInicio = now;
         if (fechaFin == null) fechaFin = now;
         
-        return movimientoRepository.findMovimientosPorClienteYFechas(clienteId, fechaInicio, fechaFin)
+        LocalDateTime inicio = fechaInicio.atStartOfDay();
+        LocalDateTime fin = fechaFin.plusDays(1).atStartOfDay();
+        
+        return movimientoRepository.findMovimientosPorClienteYFechas(clienteId, inicio, fin)
                 .stream().map(mov -> {
                     MovimientoResponseDTO dto = movimientoMapper.toResponseDTO(mov);
                     dto.setValor(getValorConSigno(mov));
