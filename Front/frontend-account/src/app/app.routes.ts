@@ -18,6 +18,10 @@ export const routes: Routes = [
         path: 'movimientos', 
         loadComponent: () => import('./features/movimientos/pages/movimiento-list/movimiento-list').then(m => m.MovimientoListComponent) 
       },
+      { 
+        path: 'reportes', 
+        loadComponent: () => import('./features/reportes/pages/reporte-list/reporte-list').then(m => m.ReporteListComponent) 
+      },
 
       { path: '', redirectTo: 'clientes', pathMatch: 'full' }
     ]

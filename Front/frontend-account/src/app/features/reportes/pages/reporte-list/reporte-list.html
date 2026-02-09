@@ -1,0 +1,108 @@
+<div class="reporte-container">
+  <!-- Encabezado con título -->
+  <div class="header-section">
+    <h1>📊 Reportes de Estado de Cuenta</h1>
+  </div>
+
+  <!-- Sección de filtros -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <!-- Selector de Cliente -->
+      <div class="filter-field">
+        <label for="clienteSelect">Seleccione un Cliente <span class="required">*</span></label>
+        <select
+          id="clienteSelect"
+          [(ngModel)]="clienteSeleccionado"
+          aria-label="Seleccionar cliente"
+          (change)="limpiarReporte()"
+        >
+          <option [value]="null">-- Elija un cliente --</option>
+          <option *ngFor="let cliente of clientes" [value]="cliente.clienteId">
+            {{ cliente.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Filtro de Fecha Inicio -->
+      <div class="filter-field">
+        <label for="fechaInicio">Desde (Fecha) <span class="optional">(opcional)</span></label>
+        <input
+          id="fechaInicio"
+          type="date"
+          [(ngModel)]="fechaInicio"
+          aria-label="Filtrar por fecha de inicio"
+          (change)="limpiarReporte()"
+        >
+      </div>
+
+      <!-- Filtro de Fecha Fin -->
+      <div class="filter-field">
+        <label for="fechaFin">Hasta (Fecha) <span class="optional">(opcional)</span></label>
+        <input
+          id="fechaFin"
+          type="date"
+          [(ngModel)]="fechaFin"
+          aria-label="Filtrar por fecha de fin"
+          (change)="limpiarReporte()"
+        >
+      </div>
+
+      <!-- Botones de Acción -->
+      <div class="filter-actions">
+        <button
+          class="btn-filter"
+          (click)="generarReporte()"
+          [disabled]="!clienteSeleccionado"
+          title="Generar reporte"
+        >
+          📄 Generar
+        </button>
+        <button
+          class="btn-reset"
+          (click)="limpiarFiltros()"
+          title="Limpiar filtros"
+        >
+          🔄 Limpiar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMensaje" class="error-message" role="alert">
+    <span>⚠️ {{ errorMensaje }}</span>
+  </div>
+
+  <!-- Visor de PDF -->
+  <div *ngIf="reporteUrl" class="pdf-viewer-section">
+    <div class="pdf-header">
+      <h2>{{ obtenerNombreCliente() }} - Estado de Cuenta</h2>
+      <button
+        class="btn-download"
+        (click)="descargarReporte()"
+        title="Descargar reporte en PDF"
+      >
+        ⬇️ Descargar PDF
+      </button>
+    </div>
+
+    <div class="pdf-viewer">
+      <iframe
+        [src]="reporteUrl"
+        frameborder="0"
+        allowfullscreen
+        title="Visor de PDF del reporte"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- Mensaje cuando no hay reporte -->
+  <div *ngIf="!reporteUrl && !cargando && clienteSeleccionado" class="empty-state">
+    <p>Seleccione un cliente y haga clic en "Generar Reporte" para ver el estado de cuenta.</p>
+  </div>
+
+  <!-- Estado vacio inicial -->
+  <div *ngIf="!clienteSeleccionado" class="empty-state">
+    <p>👈 Seleccione un cliente para generar su reporte de estado de cuenta.</p>
+  </div>
+</div>
