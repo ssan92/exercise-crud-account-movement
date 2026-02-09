@@ -48,19 +48,18 @@ public class ReporteServiceImpl implements ReporteService {
                 .filter(c -> c.getCliente().getClienteId().equals(clienteId))
                 .collect(Collectors.toList());
         
-        // Si las fechas no están presentes, usar la fecha actual
         LocalDate now = LocalDate.now();
-        final LocalDate inicio = fechaInicio != null ? fechaInicio : now;
-        final LocalDate fin = fechaFin != null ? fechaFin : now;
+        if (fechaInicio == null) fechaInicio = now;
+        if (fechaFin == null) fechaFin = now;
+        
+        final java.time.LocalDateTime inicio = fechaInicio.atStartOfDay();
+        final java.time.LocalDateTime fin = fechaFin.plusDays(1).atStartOfDay();
         
         List<CuentaReporteDTO> cuentasReporte = new ArrayList<>();
         for (Cuenta cuenta : cuentas) {
             List<Movimiento> movimientos = movimientoRepository.findByCuenta_NumeroCuenta(cuenta.getNumeroCuenta())
                     .stream()
-                    .filter(m -> {
-                        LocalDate movDate = m.getFecha().toLocalDate();
-                        return !movDate.isBefore(inicio) && !movDate.isAfter(fin);
-                    })
+                    .filter(m -> !m.getFecha().isBefore(inicio) && m.getFecha().isBefore(fin))
                     .collect(Collectors.toList());
             List<MovimientoReporteDTO> movimientosDTO = new ArrayList<>();
             double totalCreditos = 0;

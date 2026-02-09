@@ -75,7 +75,6 @@ public class CuentaServiceImpl implements CuentaService {
         Cuenta cuenta = cuentaRepository.findByNumeroCuenta(numeroCuenta)
                 .orElseThrow(() -> new GeneralException(CUENTA_NO_EXISTE,412));
         cuentaMapper.updateEntityFromDto(cuentaDTO, cuenta);
-        // Validar y actualizar el cliente
         if (cuentaDTO.getClienteId() != null) {
             if (!clienteRepository.existsById(cuentaDTO.getClienteId())) {
                 throw new ClienteNotFoundException(cuentaDTO.getClienteId());
