@@ -6,7 +6,7 @@
     <div class="header-section">
       <h1>Listado de Clientes</h1>
       <button class="btn-accent" (click)="abrirNuevo()" title="Crear nuevo cliente">
-        ➕ Nuevo Cliente
+        <i class="fa-solid fa-plus" aria-hidden="true"></i> Nuevo Cliente
       </button>
     </div>
 
@@ -38,7 +38,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let cliente of clientesFiltrados; trackBy: trackByCliente" role="row">
+          <tr *ngFor="let cliente of clientesFiltrados"  role="row">
             <td data-label="Nombre">{{ cliente.nombre }}</td>
             <td data-label="Género">{{ cliente.genero }}</td>
             <td data-label="Edad" style="text-align: center;">{{ cliente.edad }}</td>
@@ -57,7 +57,7 @@
                 title="Editar cliente"
                 aria-label="Editar cliente {{ cliente.nombre }}"
               >
-                ✏️
+                <i class="fa-solid fa-pen" aria-hidden="true"></i>
               </button>
               <button
                 class="btn-icon delete"
@@ -65,7 +65,7 @@
                 title="Eliminar cliente"
                 aria-label="Eliminar cliente {{ cliente.nombre }}"
               >
-                🗑️
+                <i class="fa-solid fa-trash" aria-hidden="true"></i>
               </button>
             </td>
           </tr>

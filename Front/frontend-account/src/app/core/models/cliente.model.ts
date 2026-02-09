@@ -1,6 +1,4 @@
-/**
- * Modelo Cliente - Interfaz para clientes bancarios
- */
+// Modelo Cliente
 export interface Cliente {
   clienteId?: string | number;
   nombre: string;

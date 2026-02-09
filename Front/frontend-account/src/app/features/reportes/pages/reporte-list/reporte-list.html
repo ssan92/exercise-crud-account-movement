@@ -1,7 +1,7 @@
 <div class="reporte-container">
   <!-- Encabezado con título -->
   <div class="header-section">
-    <h1>📊 Reportes de Estado de Cuenta</h1>
+    <h1>Reportes de Estado de Cuenta</h1>
   </div>
 
   <!-- Sección de filtros -->
@@ -23,26 +23,26 @@
         </select>
       </div>
 
-      <!-- Filtro de Fecha Inicio -->
+      <!-- Fecha desde -->
       <div class="filter-field">
-        <label for="fechaInicio">Desde (Fecha) <span class="optional">(opcional)</span></label>
+        <label for="fechaInicio">Fecha desde <span class="optional">(opcional)</span></label>
         <input
           id="fechaInicio"
           type="date"
           [(ngModel)]="fechaInicio"
-          aria-label="Filtrar por fecha de inicio"
+          aria-label="Fecha desde"
           (change)="limpiarReporte()"
         >
       </div>
 
-      <!-- Filtro de Fecha Fin -->
+      <!-- Fecha hasta -->
       <div class="filter-field">
-        <label for="fechaFin">Hasta (Fecha) <span class="optional">(opcional)</span></label>
+        <label for="fechaFin">Fecha hasta <span class="optional">(opcional)</span></label>
         <input
           id="fechaFin"
           type="date"
           [(ngModel)]="fechaFin"
-          aria-label="Filtrar por fecha de fin"
+          aria-label="Fecha hasta"
           (change)="limpiarReporte()"
         >
       </div>
@@ -55,14 +55,14 @@
           [disabled]="!clienteSeleccionado"
           title="Generar reporte"
         >
-          📄 Generar
+          <i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar
         </button>
         <button
           class="btn-reset"
           (click)="limpiarFiltros()"
           title="Limpiar filtros"
         >
-          🔄 Limpiar
+          <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Limpiar
         </button>
       </div>
     </div>
@@ -70,11 +70,11 @@
 
   <!-- Mensaje de error -->
   <div *ngIf="errorMensaje" class="error-message" role="alert">
-    <span>⚠️ {{ errorMensaje }}</span>
+    <span><i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> {{ errorMensaje }}</span>
   </div>
 
   <!-- Visor de PDF -->
-  <div *ngIf="reporteUrl" class="pdf-viewer-section">
+  <div *ngIf="reporteUrlSafe" class="pdf-viewer-section">
     <div class="pdf-header">
       <h2>{{ obtenerNombreCliente() }} - Estado de Cuenta</h2>
       <button
@@ -82,13 +82,13 @@
         (click)="descargarReporte()"
         title="Descargar reporte en PDF"
       >
-        ⬇️ Descargar PDF
+        <i class="fa-solid fa-download" aria-hidden="true"></i> Descargar PDF
       </button>
     </div>
 
     <div class="pdf-viewer">
       <iframe
-        [src]="reporteUrl"
+        [src]="reporteUrlSafe"
         frameborder="0"
         allowfullscreen
         title="Visor de PDF del reporte"
@@ -96,13 +96,11 @@
     </div>
   </div>
 
-  <!-- Mensaje cuando no hay reporte -->
-  <div *ngIf="!reporteUrl && !cargando && clienteSeleccionado" class="empty-state">
-    <p>Seleccione un cliente y haga clic en "Generar Reporte" para ver el estado de cuenta.</p>
-  </div>
-
-  <!-- Estado vacio inicial -->
-  <div *ngIf="!clienteSeleccionado" class="empty-state">
-    <p>👈 Seleccione un cliente para generar su reporte de estado de cuenta.</p>
+  <!-- Estado vacío: sin filtrar o sin reporte generado -->
+  <div *ngIf="!reporteUrlSafe && !cargando" class="empty-state">
+    <div class="empty-icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div>
+    <h2>Sin reporte</h2>
+    <p *ngIf="!clienteSeleccionado">Seleccione un cliente para generar su reporte de estado de cuenta.</p>
+    <p *ngIf="clienteSeleccionado">Haga clic en Generar para ver el estado de cuenta.</p>
   </div>
 </div>

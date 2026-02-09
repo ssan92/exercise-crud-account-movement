@@ -10,7 +10,7 @@
         (click)="abrirNuevo()" 
         title="Crear nuevo movimiento"
       >
-        ➕ Nuevo Movimiento
+        <i class="fa-solid fa-plus" aria-hidden="true"></i> Nuevo Movimiento
       </button>
     </div>
 
@@ -32,14 +32,25 @@
           </select>
         </div>
 
-        <!-- Filtro de Fecha -->
+        <!-- Fecha desde -->
         <div class="filter-field">
-          <label for="fechaInicio">Desde (Fecha) <span class="optional">(opcional)</span></label>
+          <label for="fechaDesde">Fecha desde <span class="optional">(opcional)</span></label>
           <input
-            id="fechaInicio"
+            id="fechaDesde"
             type="date"
-            [(ngModel)]="fechaInicio"
-            aria-label="Filtrar por fecha de inicio"
+            [(ngModel)]="fechaDesde"
+            aria-label="Fecha desde"
+          >
+        </div>
+
+        <!-- Fecha hasta -->
+        <div class="filter-field">
+          <label for="fechaHasta">Fecha hasta <span class="optional">(opcional)</span></label>
+          <input
+            id="fechaHasta"
+            type="date"
+            [(ngModel)]="fechaHasta"
+            aria-label="Fecha hasta"
           >
         </div>
 
@@ -51,14 +62,14 @@
             [disabled]="!clienteSeleccionado"
             title="Aplicar filtros"
           >
-            🔍 Buscar
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Buscar
           </button>
           <button
             class="btn-reset"
             (click)="limpiarFiltros()"
             title="Limpiar filtros"
           >
-            🔄 Limpiar
+            <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Limpiar
           </button>
         </div>
       </div>
@@ -78,7 +89,7 @@
 
     <!-- Indicador de carga -->
     <div *ngIf="cargando" class="loading-indicator">
-      <p>⏳ Cargando movimientos...</p>
+      <p><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Cargando movimientos...</p>
     </div>
 
     <!-- Tabla de movimientos -->
@@ -87,7 +98,6 @@
         <thead>
           <tr role="row">
             <th scope="col">Fecha</th>
-            <th scope="col">Cliente</th>
             <th scope="col">Número Cuenta</th>
             <th scope="col">Tipo</th>
             <th scope="col">Valor</th>
@@ -102,7 +112,6 @@
             [class.credito]="movimiento.tipoMovimiento === 'CREDITO'"
           >
             <td data-label="Fecha">{{ formatearFecha(movimiento.fecha) }}</td>
-            <td data-label="Cliente">{{ obtenerNombreCliente(movimiento.clienteId) }}</td>
             <td data-label="Número Cuenta">{{ movimiento.numeroCuenta }}</td>
             <td data-label="Tipo">
               <span 
@@ -110,12 +119,12 @@
                 [class.debito]="movimiento.tipoMovimiento === 'DEBITO'"
                 [class.credito]="movimiento.tipoMovimiento === 'CREDITO'"
               >
-                {{ movimiento.tipoMovimiento === 'DEBITO' ? '💔 Débito' : '💚 Crédito' }}
+                <span *ngIf="movimiento.tipoMovimiento === 'DEBITO'"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Débito</span><span *ngIf="movimiento.tipoMovimiento === 'CREDITO'"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Crédito</span>
               </span>
             </td>
             <td data-label="Valor" [class.debito]="movimiento.tipoMovimiento === 'DEBITO'">
               <span [class.negative]="movimiento.tipoMovimiento === 'DEBITO'">
-                {{ movimiento.tipoMovimiento === 'DEBITO' ? '-' : '+' }}{{ formatearValor(movimiento.valor) }}
+                {{ formatearValor(movimiento.valor) }}
               </span>
             </td>
             <td data-label="Acciones" class="actions">
@@ -125,7 +134,7 @@
                 title="Eliminar movimiento"
                 aria-label="Eliminar movimiento"
               >
-                🗑️
+                <i class="fa-solid fa-trash" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
@@ -138,7 +147,7 @@
       *ngIf="!cargando && movimientos.length === 0 && !clienteSeleccionado" 
       class="empty-state"
     >
-      <div class="empty-icon">📋</div>
+      <div class="empty-icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div>
       <h2>Sin movimientos</h2>
       <p>Seleccione un cliente para ver sus movimientos</p>
     </div>

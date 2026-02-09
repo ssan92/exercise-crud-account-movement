@@ -13,7 +13,7 @@
           (blur)="obtenerControl('clienteId')?.markAsTouched()"
         >
           <option value="">-- Seleccione un cliente --</option>
-          <option *ngFor="let cliente of clientes" [value]="cliente.clienteId">
+          <option *ngFor="let cliente of clientes" [value]="cliente.clienteId ?? ''">
             {{ cliente.nombre }} ({{ cliente.identificacion }})
           </option>
         </select>
@@ -36,12 +36,9 @@
           (blur)="obtenerControl('cuentaId')?.markAsTouched(); obtenerNumeroCuentaSeleccionada()"
           [disabled]="cuentas.length === 0 || cargandoCuentas"
         >
-          <option value="">
-            <span *ngIf="cargandoCuentas">-- Cargando cuentas... --</span>
-            <span *ngIf="!cargandoCuentas">-- Seleccione una cuenta --</span>
-          </option>
-          <option *ngFor="let cuenta of cuentas" [value]="cuenta.id">
-            {{ cuenta.numeroCuenta }} ({{ cuenta.tipoCuenta }} - Saldo: {{ cuenta.saldo | currency }})
+          <option value="">{{ cargandoCuentas ? '-- Cargando cuentas... --' : '-- Seleccione una cuenta --' }}</option>
+          <option *ngFor="let cuenta of cuentas" [value]="cuenta.numeroCuenta">
+            {{ cuenta.numeroCuenta }} ({{ cuenta.tipoCuenta }} - Saldo: {{ cuenta.saldoInicial | currency }})
           </option>
         </select>
         <small

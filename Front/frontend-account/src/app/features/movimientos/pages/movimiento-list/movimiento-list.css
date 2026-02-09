@@ -76,8 +76,8 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 16px;
+  grid-template-columns: minmax(160px, 1.8fr) minmax(130px, 1fr) minmax(130px, 1fr) auto auto;
+  gap: 14px;
   align-items: flex-end;
   margin-bottom: 20px;
 }
@@ -91,7 +91,10 @@
 .filter-field label {
   font-weight: 600;
   color: #2c3e50;
-  font-size: 14px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .required {
@@ -113,6 +116,15 @@
   font-size: 14px;
   transition: all 0.3s ease;
   background-color: #fafbfc;
+  min-width: 0;
+}
+
+.filter-field select {
+  max-width: 100%;
+}
+
+.filter-field input[type="date"] {
+  min-width: 130px;
 }
 
 .filter-field select:focus,
@@ -354,14 +366,15 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Responsive */
+/* Responsive: en pantallas menores los filtros pasan a 2 columnas */
 @media (max-width: 1024px) {
   .filter-group {
     grid-template-columns: 1fr 1fr;
   }
 
   .filter-actions {
-    grid-column: span 2;
+    grid-column: 1 / -1;
+    justify-content: flex-start;
   }
 }
 

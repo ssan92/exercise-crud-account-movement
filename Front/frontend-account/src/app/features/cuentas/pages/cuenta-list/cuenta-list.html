@@ -6,7 +6,7 @@
     <div class="header-section">
       <h1>Gestión de Cuentas</h1>
       <button class="btn-accent" (click)="abrirNueva()" title="Crear nueva cuenta">
-        ➕ Nueva Cuenta
+        <i class="fa-solid fa-plus" aria-hidden="true"></i> Nueva Cuenta
       </button>
     </div>
 
@@ -30,9 +30,8 @@
             <th scope="col">Número de Cuenta</th>
             <th scope="col">Tipo de Cuenta</th>
             <th scope="col">Saldo</th>
-            <th scope="col">Cliente ID</th>
+            <th scope="col">Cliente</th>
             <th scope="col">Estado</th>
-            <th scope="col">Fecha Creación</th>
             <th scope="col">Acciones</th>
           </tr>
         </thead>
@@ -46,14 +45,13 @@
                 {{ obtenerEtiquetaTipo(cuenta.tipoCuenta) }}
               </span>
             </td>
-            <td data-label="Saldo" class="saldo">{{ formatearSaldo(cuenta.saldo) }}</td>
-            <td data-label="Cliente ID" style="text-align: center;">{{ cuenta.clienteId }}</td>
+            <td data-label="Saldo Inicial" class="saldo">{{ formatearSaldo(cuenta.saldoInicial) }}</td>
+            <td data-label="Cliente">{{ obtenerNombreCliente(cuenta.clienteId) }}</td>
             <td data-label="Estado">
               <span class="badge" [class.active]="cuenta.estado" [class.inactive]="!cuenta.estado">
                 {{ cuenta.estado ? 'Activa' : 'Inactiva' }}
               </span>
             </td>
-            <td data-label="Fecha Creación" class="fecha">{{ cuenta.fechaCreacion }}</td>
             <td data-label="Acciones" class="actions">
               <button
                 class="btn-icon edit"
@@ -61,15 +59,15 @@
                 title="Editar cuenta"
                 aria-label="Editar cuenta {{ cuenta.numeroCuenta }}"
               >
-                ✏️
+                <i class="fa-solid fa-pen" aria-hidden="true"></i>
               </button>
               <button
                 class="btn-icon delete"
-                (click)="onDelete(cuenta.id)"
+                (click)="onDelete(cuenta.numeroCuenta)"
                 title="Eliminar cuenta"
                 aria-label="Eliminar cuenta {{ cuenta.numeroCuenta }}"
               >
-                🗑️
+                <i class="fa-solid fa-trash" aria-hidden="true"></i>
               </button>
             </td>
           </tr>

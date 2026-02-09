@@ -3,7 +3,7 @@
     <!-- Grid de campos del formulario -->
     <div class="form-grid">
 
-      <!-- Campo: Número de Cuenta -->
+      <!-- Campo: Número de Cuenta (bloqueado en edición) -->
       <div class="form-field">
         <label for="numeroCuenta">Número de Cuenta <span class="required">*</span></label>
         <input
@@ -12,6 +12,7 @@
           formControlName="numeroCuenta"
           placeholder="Ej: 1001-2023-001"
           aria-describedby="numeroCuenta-error"
+          [class.field-blocked]="cuentaParaEditar"
           (blur)="obtenerControl('numeroCuenta')?.markAsTouched()"
         >
         <small
@@ -77,13 +78,14 @@
         </small>
       </div>
 
-      <!-- Campo: Cliente ID -->
+      <!-- Campo: Cliente (bloqueado en edición) -->
       <div class="form-field">
         <label for="clienteId">Cliente <span class="required">*</span></label>
         <select
           id="clienteId"
           formControlName="clienteId"
           aria-describedby="clienteId-error"
+          [class.field-blocked]="cuentaParaEditar"
           (blur)="obtenerControl('clienteId')?.markAsTouched()"
         >
           <option value="">-- Seleccione un cliente --</option>

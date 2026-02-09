@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Movimiento } from '../../../../core/models/movimiento.model';
@@ -7,11 +7,6 @@ import { ClienteService } from '../../../../core/services/cliente.service';
 import { MovimientoFormComponent } from '../movimiento-form/movimiento-form';
 import { Cliente } from '../../../../core/models/cliente.model';
 
-/**
- * MovimientoListComponent: Listado de movimientos bancarios
- * SRP: Orquesta la lista, búsqueda y operaciones CRUD
- * DI: Inyecta MovimientoService
- */
 @Component({
   selector: 'app-movimiento-list',
   standalone: true,
@@ -26,32 +21,26 @@ export class MovimientoListComponent implements OnInit {
   public verFormulario = false;
   public clientes: Cliente[] = [];
   public clienteSeleccionado: string | number = '';
-  public fechaInicio = '';
+  public fechaDesde = '';
+  public fechaHasta = '';
   public busqueda = '';
   public cargando = false;
 
-  /**
-   * Constructor con inyección de dependencias
-   */
   constructor(
     private movimientoService: MovimientoService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private cdr: ChangeDetectorRef
   ) {}
 
-  /**
-   * Ciclo de vida: Se ejecuta al iniciar el componente
-   */
   ngOnInit(): void {
     this.cargarClientes();
   }
 
-  /**
-   * Carga la lista de clientes para el selector
-   */
   private cargarClientes(): void {
     this.clienteService.obtenerTodos$().subscribe({
       next: (clientes) => {
-        this.clientes = clientes;
+        this.clientes = Array.isArray(clientes) ? [...clientes] : [];
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error cargando clientes:', error);
@@ -60,9 +49,6 @@ export class MovimientoListComponent implements OnInit {
     });
   }
 
-  /**
-   * Carga los movimientos de un cliente específico
-   */
   private cargarMovimientos(): void {
     if (!this.clienteSeleccionado) {
       alert('Por favor, seleccione un cliente');
@@ -70,11 +56,13 @@ export class MovimientoListComponent implements OnInit {
     }
 
     this.cargando = true;
-    this.movimientoService.obtenerPorCliente(this.clienteSeleccionado, this.fechaInicio).subscribe({
+    this.movimientoService.obtenerPorCliente(this.clienteSeleccionado, this.fechaDesde, this.fechaHasta).subscribe({
       next: (movimientos) => {
-        this.movimientos = movimientos;
-        this.movimientosFiltrados = [...this.movimientos];
+        const copia = Array.isArray(movimientos) ? [...movimientos] : [];
+        this.movimientos = copia;
+        this.movimientosFiltrados = [...copia];
         this.cargando = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error cargando movimientos:', error);
@@ -82,49 +70,39 @@ export class MovimientoListComponent implements OnInit {
         this.cargando = false;
         this.movimientos = [];
         this.movimientosFiltrados = [];
+        this.cdr.detectChanges();
       }
     });
   }
 
-  /**
-   * Ejecuta la búsqueda de movimientos por número de cuenta
-   */
   public buscar(): void {
     if (this.busqueda.trim() === '') {
       this.movimientosFiltrados = [...this.movimientos];
     } else {
-      this.movimientosFiltrados = this.movimientoService.buscarPorNumeroCuenta(this.busqueda);
+      const numeroLower = this.busqueda.toLowerCase();
+      this.movimientosFiltrados = this.movimientos.filter(m =>
+        m.numeroCuenta.toLowerCase().includes(numeroLower)
+      );
     }
   }
 
-  /**
-   * Aplica filtros (cliente y fecha)
-   */
   public aplicarFiltros(): void {
     this.cargarMovimientos();
   }
 
-  /**
-   * Limpia los filtros
-   */
   public limpiarFiltros(): void {
     this.clienteSeleccionado = '';
-    this.fechaInicio = '';
+    this.fechaDesde = '';
+    this.fechaHasta = '';
     this.busqueda = '';
     this.movimientos = [];
     this.movimientosFiltrados = [];
   }
 
-  /**
-   * Abre el formulario para crear un nuevo movimiento
-   */
   public abrirNuevo(): void {
     this.verFormulario = true;
   }
 
-  /**
-   * Elimina un movimiento con confirmación
-   */
   public onDelete(movimientoId: string | number | undefined): void {
     if (!movimientoId) return;
 
@@ -142,11 +120,7 @@ export class MovimientoListComponent implements OnInit {
     }
   }
 
-  /**
-   * Maneja el evento cuando se guarda un movimiento
-   */
   public guardar(movimiento: Movimiento): void {
-    console.log('✓ Movimiento guardado:', movimiento);
     this.cancelar();
     // Recarga los movimientos si aún hay un cliente seleccionado
     if (this.clienteSeleccionado) {
@@ -154,44 +128,33 @@ export class MovimientoListComponent implements OnInit {
     }
   }
 
-  /**
-   * Cancela la edición y vuelve a la lista
-   */
   public cancelar(): void {
     this.verFormulario = false;
   }
 
-  /**
-   * TrackBy para optimizar el renderizado de listas
-   */
   public trackByMovimiento(index: number, movimiento: Movimiento): string | number {
     return movimiento.id || index;
   }
 
-  /**
-   * Obtiene el nombre del cliente a partir del ID
-   */
   public obtenerNombreCliente(clienteId: string | number | undefined): string {
     if (!clienteId) return 'N/A';
     const cliente = this.clientes.find(c => c.clienteId === clienteId);
     return cliente ? cliente.nombre : 'N/A';
   }
 
-  /**
-   * Formatea la fecha para mostrar
-   */
   public formatearFecha(fecha: string | undefined): string {
     if (!fecha) return 'N/A';
     try {
-      return new Date(fecha).toLocaleDateString('es-ES');
+      const d = new Date(fecha);
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      return `${day}/${month}/${year}`;
     } catch {
       return fecha;
     }
   }
 
-  /**
-   * Formatea el valor monetario
-   */
   public formatearValor(valor: number | undefined): string {
     if (!valor) return 'N/A';
     return new Intl.NumberFormat('es-CO', {

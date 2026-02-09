@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Cuenta } from '../../../../core/models/cuenta.model';
@@ -7,11 +7,6 @@ import { CuentaService } from '../../../../core/services/cuenta.service';
 import { ClienteService } from '../../../../core/services/cliente.service';
 import { CuentaFormComponent } from '../cuenta-form/cuenta-form';
 
-/**
- * CuentaListComponent: Listado de cuentas bancarias
- * SRP: Orquesta la lista, búsqueda y operaciones CRUD
- * DI: Inyecta CuentaService
- */
 @Component({
   selector: 'app-cuenta-list',
   standalone: true,
@@ -33,31 +28,24 @@ export class CuentaListComponent implements OnInit {
   // Clientes para el selector del formulario
   public clientes: Cliente[] = [];
 
-  /**
-   * Constructor con inyección de dependencias
-   */
   constructor(
     private cuentaService: CuentaService,
-    private clienteService: ClienteService
+    private clienteService: ClienteService,
+    private cdr: ChangeDetectorRef
   ) {}
 
-  /**
-   * Ciclo de vida: Se ejecuta al iniciar el componente
-   */
   ngOnInit(): void {
-    this.cargarCuentas();
-    this.cargarClientes();
     this.tiposCuenta = this.cuentaService.obtenerTiposCuenta();
+    this.cargarClientes();
   }
 
-  /**
-   * Carga todas las cuentas desde el servicio
-   */
   private cargarCuentas(): void {
     this.cuentaService.obtenerTodas$().subscribe({
       next: (cuentas) => {
-        this.cuentas = cuentas;
-        this.cuentasFiltradas = [...this.cuentas];
+        const copia = Array.isArray(cuentas) ? [...cuentas] : [];
+        this.cuentas = copia;
+        this.cuentasFiltradas = [...copia];
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error cargando cuentas:', error);
@@ -66,56 +54,50 @@ export class CuentaListComponent implements OnInit {
     });
   }
 
-  /**
-   * Carga los clientes para el selector del formulario
-   */
   private cargarClientes(): void {
-    this.clienteService.obtenerTodos$().subscribe({
+    this.clienteService.obtenerTodos().subscribe({
       next: (clientes) => {
-        this.clientes = clientes;
+        this.clientes = Array.isArray(clientes) ? [...clientes] : [];
+        this.cdr.detectChanges();
+        this.cargarCuentas();
       },
       error: (error) => {
         console.error('Error cargando clientes:', error);
+        this.cargarCuentas();
       }
     });
   }
 
-  /**
-   * Ejecuta la búsqueda de cuentas por número
-   */
   public buscar(): void {
     if (this.busqueda.trim() === '') {
       this.cuentasFiltradas = [...this.cuentas];
     } else {
-      this.cuentasFiltradas = this.cuentaService.buscarPorNumeroCuenta(this.busqueda);
+      this.cuentaService.buscarPorNumeroCuenta(this.busqueda).subscribe({
+        next: (list) => (this.cuentasFiltradas = list),
+        error: (err) => {
+          console.error('Error buscando cuentas:', err);
+          this.cuentasFiltradas = [];
+        }
+      });
     }
   }
 
-  /**
-   * Abre el formulario para crear una nueva cuenta
-   */
   public abrirNueva(): void {
     this.cuentaSeleccionada = null;
     this.verFormulario = true;
   }
 
-  /**
-   * Abre el formulario para editar una cuenta existente
-   */
   public onEdit(cuenta: Cuenta): void {
     // Clone para evitar mutaciones accidentales
     this.cuentaSeleccionada = { ...cuenta };
     this.verFormulario = true;
   }
 
-  /**
-   * Elimina una cuenta con confirmación
-   */
-  public onDelete(cuentaId: string | number | undefined): void {
-    if (!cuentaId) return;
+  public onDelete(numeroCuenta: string | undefined): void {
+    if (!numeroCuenta) return;
 
     if (confirm('¿Está seguro de eliminar esta cuenta?')) {
-      this.cuentaService.eliminar(cuentaId).subscribe({
+      this.cuentaService.eliminar(numeroCuenta).subscribe({
         next: () => {
           this.cargarCuentas();
           this.buscar();
@@ -128,14 +110,9 @@ export class CuentaListComponent implements OnInit {
     }
   }
 
-  /**
-   * Guarda (crear o actualizar) una cuenta
-   */
   public guardar(cuentaData: Cuenta): void {
-    if (this.cuentaSeleccionada?.id) {
-      // Actualizar cuenta existente
-      const id = this.cuentaSeleccionada.id;
-      this.cuentaService.actualizar(id, cuentaData).subscribe({
+    if (this.cuentaSeleccionada?.numeroCuenta) {
+      this.cuentaService.actualizar(this.cuentaSeleccionada.numeroCuenta, cuentaData).subscribe({
         next: () => {
           this.cargarCuentas();
           this.cancelar();
@@ -146,9 +123,7 @@ export class CuentaListComponent implements OnInit {
         }
       });
     } else {
-      // Crear nueva cuenta
-      const { id, ...datosNuevo } = cuentaData;
-      this.cuentaService.crear(datosNuevo).subscribe({
+      this.cuentaService.crear(cuentaData).subscribe({
         next: () => {
           this.cargarCuentas();
           this.cancelar();
@@ -161,32 +136,26 @@ export class CuentaListComponent implements OnInit {
     }
   }
 
-  /**
-   * Cancela la edición y vuelve a la lista
-   */
   public cancelar(): void {
     this.verFormulario = false;
     this.cuentaSeleccionada = null;
   }
 
-  /**
-   * TrackBy para optimizar el renderizado
-   */
-  public trackByCuenta(index: number, cuenta: Cuenta): string | number {
-    return cuenta.id || index;
+  public trackByCuenta(index: number, cuenta: Cuenta): string {
+    return cuenta.numeroCuenta;
   }
 
-  /**
-   * Obtiene la etiqueta del tipo de cuenta
-   */
+  public obtenerNombreCliente(clienteId: string | number | undefined): string {
+    if (clienteId == null || clienteId === '') return 'N/A';
+    const cliente = this.clientes.find(c => c.clienteId === clienteId || String(c.clienteId) === String(clienteId));
+    return cliente ? cliente.nombre : String(clienteId);
+  }
+
   public obtenerEtiquetaTipo(tipo: string): string {
     const encontrado = this.tiposCuenta.find(t => t.valor === tipo);
     return encontrado ? encontrado.etiqueta : tipo;
   }
 
-  /**
-   * Formatea el saldo para mostrar
-   */
   public formatearSaldo(saldo: number | undefined): string {
     if (!saldo) return '$ 0.00';
     return `$ ${saldo.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;

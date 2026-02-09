@@ -1,7 +1,4 @@
-/**
- * Modelo de Reporte
- * Interfaz para el estado de cuenta en formato PDF (base64)
- */
+// Modelo Reporte (estado de cuenta PDF base64)
 export interface Reporte {
   clienteId: number;
   nombre?: string;

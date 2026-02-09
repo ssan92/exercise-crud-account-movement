@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Cliente } from '../../../../core/models/cliente.model';
@@ -20,28 +20,22 @@ export class ClienteListComponent implements OnInit {
   public clienteSeleccionado: Cliente | null = null;
   public busqueda = '';
 
-  /**
-   * Constructor con inyección de dependencias (DI)
-   * Sigue el principio SOLID de inversión de dependencias
-   */
-  constructor(private clienteService: ClienteService) {}
+  constructor(
+    private clienteService: ClienteService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  /**
-   * Ciclo de vida: Se ejecuta al iniciar el componente
-   * Carga los datos del servicio
-   */
   ngOnInit(): void {
     this.cargarClientes();
   }
 
-  /**
-   * Carga todos los clientes desde el servicio
-   */
   private cargarClientes(): void {
-    this.clienteService.obtenerTodos$().subscribe({
+    this.clienteService.obtenerTodos().subscribe({
       next: (clientes) => {
-        this.clientes = clientes;
-        this.clientesFiltrados = [...this.clientes];
+        const copia = Array.isArray(clientes) ? [...clientes] : [];
+        this.clientes = copia;
+        this.clientesFiltrados = [...copia];
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error cargando clientes:', error);
@@ -50,37 +44,31 @@ export class ClienteListComponent implements OnInit {
     });
   }
 
-  /**
-   * Ejecuta la búsqueda de clientes por nombre
-   */
   public buscar(): void {
     if (this.busqueda.trim() === '') {
       this.clientesFiltrados = [...this.clientes];
     } else {
-      this.clientesFiltrados = this.clienteService.buscarPorNombre(this.busqueda);
+      this.clienteService.buscarPorNombre(this.busqueda).subscribe({
+        next: (list) => (this.clientesFiltrados = list),
+        error: (err) => {
+          console.error('Error buscando clientes:', err);
+          this.clientesFiltrados = [];
+        }
+      });
     }
   }
 
-  /**
-   * Abre el formulario para crear un nuevo cliente
-   */
   public abrirNuevo(): void {
     this.clienteSeleccionado = null;
     this.verFormulario = true;
   }
 
-  /**
-   * Abre el formulario para editar un cliente existente
-   */
   public onEdit(cliente: Cliente): void {
     // Clone para evitar mutaciones accidentales (Clean Code)
     this.clienteSeleccionado = { ...cliente };
     this.verFormulario = true;
   }
 
-  /**
-   * Elimina un cliente con confirmación
-   */
   public onDelete(clienteId: string | number | undefined): void {
     if (!clienteId) return;
 
@@ -98,9 +86,6 @@ export class ClienteListComponent implements OnInit {
     }
   }
 
-  /**
-   * Guarda (crear o actualizar) un cliente
-   */
   public guardar(clienteData: Cliente): void {
     if (this.clienteSeleccionado) {
       // Actualizar cliente existente
@@ -130,19 +115,10 @@ export class ClienteListComponent implements OnInit {
     }
   }
 
-  /**
-   * Cancela la edición y vuelve a la lista
-   */
   public cancelar(): void {
     this.verFormulario = false;
     this.clienteSeleccionado = null;
   }
 
-  /**
-   * TrackBy para optimizar el renderizado de listas (perfomance)
-   * Solo redibuja items necesarios cuando cambian
-   */
-  public trackByCliente(index: number, cliente: Cliente): string {
-    return cliente.identificacion;
-  }
+
 }
