@@ -88,9 +88,8 @@ public class MovimientoServiceImpl implements MovimientoService {
         LocalDate now = LocalDate.now();
         if (fechaInicio == null) fechaInicio = now;
         if (fechaFin == null) fechaFin = now;
-        LocalDateTime inicio = fechaInicio.atStartOfDay();
-        LocalDateTime fin = fechaFin.atTime(23, 59, 59);
-        return movimientoRepository.findByCuenta_Cliente_ClienteIdAndFechaBetween(clienteId, inicio, fin)
+        
+        return movimientoRepository.findMovimientosPorClienteYFechas(clienteId, fechaInicio, fechaFin)
                 .stream().map(mov -> {
                     MovimientoResponseDTO dto = movimientoMapper.toResponseDTO(mov);
                     dto.setValor(getValorConSigno(mov));

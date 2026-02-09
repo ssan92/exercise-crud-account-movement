@@ -127,7 +127,7 @@ class MovimientoServiceImplTest {
         Movimiento mov = new Movimiento();
         mov.setValor(15.0);
         MovimientoResponseDTO dto = MovimientoResponseDTO.builder().build();
-        when(movimientoRepository.findByCuenta_Cliente_ClienteIdAndFechaBetween(anyLong(), any(LocalDateTime.class), any(LocalDateTime.class)))
+        when(movimientoRepository.findMovimientosPorClienteYFechas(clienteId, fechaInicio, fechaFin))
                 .thenReturn(Collections.singletonList(mov));
         when(movimientoMapper.toResponseDTO(mov)).thenReturn(dto);
         List<MovimientoResponseDTO> result = movimientoService.obtenerMovimientosPorClienteYFechas(clienteId, fechaInicio, fechaFin);
@@ -141,7 +141,8 @@ class MovimientoServiceImplTest {
         Movimiento mov = new Movimiento();
         mov.setValor(1.0);
         MovimientoResponseDTO dto = MovimientoResponseDTO.builder().build();
-        when(movimientoRepository.findByCuenta_Cliente_ClienteIdAndFechaBetween(anyLong(), any(LocalDateTime.class), any(LocalDateTime.class)))
+        LocalDate today = LocalDate.now();
+        when(movimientoRepository.findMovimientosPorClienteYFechas(clienteId, today, today))
                 .thenReturn(Collections.singletonList(mov));
         when(movimientoMapper.toResponseDTO(mov)).thenReturn(dto);
         List<MovimientoResponseDTO> result = movimientoService.obtenerMovimientosPorClienteYFechas(clienteId, null, null);

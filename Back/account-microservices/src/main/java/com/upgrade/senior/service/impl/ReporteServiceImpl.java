@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -48,13 +47,20 @@ public class ReporteServiceImpl implements ReporteService {
         List<Cuenta> cuentas = cuentaRepository.findAll().stream()
                 .filter(c -> c.getCliente().getClienteId().equals(clienteId))
                 .collect(Collectors.toList());
+        
+        // Si las fechas no están presentes, usar la fecha actual
+        LocalDate now = LocalDate.now();
+        final LocalDate inicio = fechaInicio != null ? fechaInicio : now;
+        final LocalDate fin = fechaFin != null ? fechaFin : now;
+        
         List<CuentaReporteDTO> cuentasReporte = new ArrayList<>();
         for (Cuenta cuenta : cuentas) {
-            LocalDateTime inicio = fechaInicio != null ? fechaInicio.atStartOfDay() : LocalDate.now().atStartOfDay();
-            LocalDateTime fin = fechaFin != null ? fechaFin.atTime(23,59,59) : LocalDate.now().atTime(23,59,59);
             List<Movimiento> movimientos = movimientoRepository.findByCuenta_NumeroCuenta(cuenta.getNumeroCuenta())
                     .stream()
-                    .filter(m -> !m.getFecha().isBefore(inicio) && !m.getFecha().isAfter(fin))
+                    .filter(m -> {
+                        LocalDate movDate = m.getFecha().toLocalDate();
+                        return !movDate.isBefore(inicio) && !movDate.isAfter(fin);
+                    })
                     .collect(Collectors.toList());
             List<MovimientoReporteDTO> movimientosDTO = new ArrayList<>();
             double totalCreditos = 0;
