@@ -116,60 +116,78 @@ Para dudas o sugerencias, contacta al equipo de desarrollo.
 
 # Front
 
-## 1. Requisitos
-* Node v20.20.0 o superior
-* npm 8.8.0 o superior
-* Servicio Back corriendo puerto 8080
+# Frontend Account
 
-## 2. Ejecutar la aplicación
-El proyecto está preparado para usar MySQL. Puedes levantar la base de datos junto con el microservicio usando Docker Compose:
+Aplicación Angular para la gestión de cuentas, clientes, movimientos y reportes. Generada con [Angular CLI](https://github.com/angular/angular-cli) 21.1.3.
+
+## Requisitos
+
+- **Node.js** 18.x o superior
+- **npm** 8.x o superior
+- **Backend** en ejecución (ver sección [Dependencia del backend](#dependencia-del-backend))
+
+## Instalación
+
+```bash
+npm install
+```
+
+## Ejecutar la aplicación
+
+```bash
+npm start
+```
+
+O directamente con Angular CLI:
+
 ```bash
 ng serve
 ```
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-## Code scaffolding
+La aplicación estará disponible en `http://localhost:4200/` y se recargará automáticamente al modificar el código.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Ejecutar tests
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Para ejecutar las pruebas unitarias con [Vitest](https://vitest.dev/):
 
 ```bash
-ng generate --help
+npm test
 ```
 
-## Building
-
-To build the project run:
+Para ejecutar los tests una sola vez (sin modo watch):
 
 ```bash
-ng build
+npm test -- --no-watch
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Dependencia del backend
 
-## Running unit tests
+Esta aplicación **requiere** que el backend esté en ejecución. El frontend consume la API en:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+| Recurso | URL base |
+|---------|----------|
+| API | `http://localhost:8080/api` |
+| Clientes | `http://localhost:8080/api/clientes` |
+| Cuentas | `http://localhost:8080/api/cuentas` |
+| Movimientos | `http://localhost:8080/api/movimientos` |
+| Reportes | `http://localhost:8080/api/reportes` |
+
+Consultar `Back/account-microservices/README.md` para requisitos detallados (Java 17, MySQL, etc.) y configuración.
+
+## Build
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+Los artefactos se generan en `dist/`.
 
-For end-to-end (e2e) testing, run:
+## Estructura del proyecto
 
-```bash
-ng e2e
-```
+- `src/app/core/` — Modelos y servicios de API
+- `src/app/features/` — Módulos: clientes, cuentas, movimientos, reportes
+- `src/app/shared/` — Componentes compartidos (layout, sidebar)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Recursos adicionales
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Para más información sobre Angular CLI: [Angular CLI Overview](https://angular.dev/tools/cli)
