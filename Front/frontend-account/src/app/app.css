@@ -1,0 +1,126 @@
+/**
+ * app.css - Estilos globales de la aplicación
+ * Define variables CSS, temas y estilos base consistentes en toda la app
+ */
+
+:root {
+  /* Colores institucionales - Paleta bancaria profesional */
+  --color-primary: #2c3e50;
+  --color-secondary: #34495e;
+  --color-accent: #f1c40f;
+  --color-success: #27ae60;
+  --color-danger: #e74c3c;
+  --color-warning: #f39c12;
+  --color-info: #3498db;
+
+  /* Estados */
+  --status-active: #00b894;
+  --status-inactive: #d63031;
+  --status-bg-active: #d4edda;
+  --status-bg-inactive: #f8d7da;
+
+  /* Tonos neutrales */
+  --color-white: #ffffff;
+  --color-background: #f5f7fa;
+  --color-border: #dcdde1;
+  --color-text: #2c3e50;
+  --color-text-light: #95a5a6;
+  --color-gray-light: #ecf0f1;
+
+  /* Espaciado (escala 8px) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 25px;
+  --spacing-3xl: 30px;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  /* Sombras profesionales */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+  /* Transiciones */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+
+  /* Tipografía */
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-background);
+  line-height: 1.6;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-secondary);
+}
+
+h1 { font-size: var(--font-size-2xl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+
+/* Párrafos */
+p {
+  margin: 0 0 var(--spacing-lg) 0;
+}
+
+/* Links */
+a {
+  color: var(--color-info);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary);
+}
+
+/* Inputs */
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* Utilidades */
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-muted { color: var(--color-text-light); }
+
+.mb-0 { margin-bottom: 0 !important; }
+.mt-lg { margin-top: var(--spacing-lg) !important; }
+.pt-lg { padding-top: var(--spacing-lg) !important; }

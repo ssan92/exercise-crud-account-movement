@@ -60,6 +60,16 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<CuentaResponseDTO> obtenerCuentasPorClienteId(Long clienteId) {
+        if (!clienteRepository.existsById(clienteId)) {
+            throw new ClienteNotFoundException(clienteId);
+        }
+        return cuentaRepository.findByClienteClienteId(clienteId).stream()
+                .map(cuentaMapper::toResponseDTO).toList();
+    }
+
+    @Override
     @Transactional
     public CuentaResponseDTO actualizarCuenta(String numeroCuenta, CuentaCreateDTO cuentaDTO) {
         Cuenta cuenta = cuentaRepository.findByNumeroCuenta(numeroCuenta)

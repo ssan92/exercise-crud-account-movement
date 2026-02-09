@@ -49,6 +49,14 @@ public class CuentaController {
         return ResponseEntity.ok(cuentas);
     }
 
+    @GetMapping("/cliente/{clienteId}")
+    public ResponseEntity<List<CuentaResponseDTO>> getCuentasPorCliente(@PathVariable Long clienteId) {
+        log.info("[GET] /api/cuentas/cliente/{} - Request", clienteId);
+        List<CuentaResponseDTO> cuentas = cuentaService.obtenerCuentasPorClienteId(clienteId);
+        log.info("[GET] /api/cuentas/cliente/{} - Response: {}", clienteId, cuentas);
+        return ResponseEntity.ok(cuentas);
+    }
+
     @PutMapping("/cuenta/{numeroCuenta}")
     public ResponseEntity<CuentaResponseDTO> updateCuenta(@PathVariable String numeroCuenta, @RequestBody CuentaCreateDTO cuentaRequest) {
         log.info("[PUT] /api/cuentas/cuenta/{} - Request: {}", numeroCuenta, cuentaRequest);

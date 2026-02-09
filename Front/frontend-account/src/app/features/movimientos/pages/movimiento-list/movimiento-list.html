@@ -1,0 +1,185 @@
+<div class="movimiento-container">
+
+  <!-- VISTA: Listado de Movimientos -->
+  <div *ngIf="!verFormulario">
+    <!-- Encabezado con título y botón nuevo -->
+    <div class="header-section">
+      <h1>Movimientos Bancarios</h1>
+      <button 
+        class="btn-accent" 
+        (click)="abrirNuevo()" 
+        title="Crear nuevo movimiento"
+      >
+        <i class="fa-solid fa-plus" aria-hidden="true"></i> Nuevo Movimiento
+      </button>
+    </div>
+
+    <!-- Sección de filtros -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <!-- Selector de Cliente -->
+        <div class="filter-field">
+          <label for="clienteSelect">Seleccione un Cliente <span class="required">*</span></label>
+          <select
+            id="clienteSelect"
+            [(ngModel)]="clienteSeleccionado"
+            aria-label="Seleccionar cliente"
+          >
+            <option value="">-- Elija un cliente --</option>
+            <option *ngFor="let cliente of clientes" [value]="cliente.clienteId">
+              {{ cliente.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Fecha desde -->
+        <div class="filter-field">
+          <label for="fechaDesde">Fecha desde <span class="optional">(opcional)</span></label>
+          <input
+            id="fechaDesde"
+            type="date"
+            [(ngModel)]="fechaDesde"
+            aria-label="Fecha desde"
+          >
+        </div>
+
+        <!-- Fecha hasta -->
+        <div class="filter-field">
+          <label for="fechaHasta">Fecha hasta <span class="optional">(opcional)</span></label>
+          <input
+            id="fechaHasta"
+            type="date"
+            [(ngModel)]="fechaHasta"
+            aria-label="Fecha hasta"
+          >
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="filter-actions">
+          <button
+            class="btn-filter"
+            (click)="aplicarFiltros()"
+            [disabled]="!clienteSeleccionado"
+            title="Aplicar filtros"
+          >
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Buscar
+          </button>
+          <button
+            class="btn-reset"
+            (click)="limpiarFiltros()"
+            title="Limpiar filtros"
+          >
+            <i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i> Limpiar
+          </button>
+        </div>
+      </div>
+
+      <!-- Búsqueda por número de cuenta -->
+      <div class="search-section" *ngIf="movimientos.length > 0">
+        <input
+          type="text"
+          placeholder="Buscar por número de cuenta..."
+          class="search-input"
+          [(ngModel)]="busqueda"
+          (keyup)="buscar()"
+          aria-label="Buscar movimientos por número de cuenta"
+        >
+      </div>
+    </div>
+
+    <!-- Indicador de carga -->
+    <div *ngIf="cargando" class="loading-indicator">
+      <p><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> Cargando movimientos...</p>
+    </div>
+
+    <!-- Tabla de movimientos -->
+    <div *ngIf="!cargando && movimientos.length > 0" class="table-wrapper">
+      <table class="banco-table" role="grid" aria-label="Lista de movimientos">
+        <thead>
+          <tr role="row">
+            <th scope="col">Fecha</th>
+            <th scope="col">Número Cuenta</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let movimiento of movimientosFiltrados; trackBy: trackByMovimiento" 
+            role="row"
+            [class.debito]="movimiento.tipoMovimiento === 'DEBITO'"
+            [class.credito]="movimiento.tipoMovimiento === 'CREDITO'"
+          >
+            <td data-label="Fecha">{{ formatearFecha(movimiento.fecha) }}</td>
+            <td data-label="Número Cuenta">{{ movimiento.numeroCuenta }}</td>
+            <td data-label="Tipo">
+              <span 
+                class="badge" 
+                [class.debito]="movimiento.tipoMovimiento === 'DEBITO'"
+                [class.credito]="movimiento.tipoMovimiento === 'CREDITO'"
+              >
+                <span *ngIf="movimiento.tipoMovimiento === 'DEBITO'"><i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Débito</span><span *ngIf="movimiento.tipoMovimiento === 'CREDITO'"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Crédito</span>
+              </span>
+            </td>
+            <td data-label="Valor" [class.debito]="movimiento.tipoMovimiento === 'DEBITO'">
+              <span [class.negative]="movimiento.tipoMovimiento === 'DEBITO'">
+                {{ formatearValor(movimiento.valor) }}
+              </span>
+            </td>
+            <td data-label="Acciones" class="actions">
+              <button
+                class="btn-icon delete"
+                (click)="onDelete(movimiento.id)"
+                title="Eliminar movimiento"
+                aria-label="Eliminar movimiento"
+              >
+                <i class="fa-solid fa-trash" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Documento vacío -->
+    <div 
+      *ngIf="!cargando && movimientos.length === 0 && !clienteSeleccionado" 
+      class="empty-state"
+    >
+      <div class="empty-icon"><i class="fa-solid fa-clipboard-list" aria-hidden="true"></i></div>
+      <h2>Sin movimientos</h2>
+      <p>Seleccione un cliente para ver sus movimientos</p>
+    </div>
+
+    <!-- Mensaje cuando no hay resultados -->
+    <div 
+      *ngIf="!cargando && movimientos.length > 0 && movimientosFiltrados.length === 0" 
+      class="no-results"
+    >
+      <p>No se encontraron movimientos con los criterios de búsqueda.</p>
+    </div>
+
+    <!-- Mensaje cuando la búsqueda no devuelve resultados -->
+    <div 
+      *ngIf="!cargando && clienteSeleccionado && movimientos.length === 0" 
+      class="no-results"
+    >
+      <p>No hay movimientos para el cliente seleccionado en el período especificado.</p>
+    </div>
+  </div>
+
+  <!-- VISTA: Formulario de Movimientos -->
+  <div *ngIf="verFormulario">
+    <div class="header-section">
+      <h1>Crear Nuevo Movimiento</h1>
+    </div>
+
+    <app-movimiento-form
+      (onSave)="guardar($event)"
+      (onCancel)="cancelar()"
+      aria-label="Formulario de movimientos"
+    ></app-movimiento-form>
+  </div>
+
+</div>

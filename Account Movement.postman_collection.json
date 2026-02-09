@@ -243,6 +243,34 @@
           "response": []
         },
         {
+          "name": "Get Account By IdCliente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/cuentas/cliente/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "cuentas",
+                "cliente",
+                "4"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/cuentas/1' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        },
+        {
           "name": "Get Account All",
           "request": {
             "method": "GET",
@@ -403,6 +431,46 @@
                 "movimientos",
                 "cuenta",
                 "4444"
+              ]
+            },
+            "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/cuentas/1/movimientos' \\\r\n  -H 'accept: application/json'"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movimiento By Cliente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/api/movimientos/cliente/4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "movimientos",
+                "cliente",
+                "4"
+              ],
+              "query": [
+                {
+                  "key": "fechaInicio",
+                  "value": "2022-02-08",
+                  "disabled": true
+                },
+                {
+                  "key": "fechaFin",
+                  "value": "2022-02-08",
+                  "disabled": true
+                }
               ]
             },
             "description": "Generated from cURL: curl -X 'GET' \\\r\n  'http://localhost:8080/api/cuentas/1/movimientos' \\\r\n  -H 'accept: application/json'"
